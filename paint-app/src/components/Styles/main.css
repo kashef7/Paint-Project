@@ -1,0 +1,111 @@
+#MainPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    height: 100vh;
+    gap: 0; /* Remove any gap between elements */
+}
+
+
+.canvas{
+    margin-top: 0;
+    border-style: solid;
+    border-color: black;
+    width: 900px;
+    height: 500px;
+    background-color: rgb(255, 255, 255);
+}
+
+#tools {
+    border-style: solid;
+    border-color: black;
+    background-color: rgb(107, 105, 105);
+    width: 900px;
+    box-sizing: border-box;
+    display: flex;        /* Make buttons flex items */
+    align-items: center;  /* Vertically center buttons */
+    gap: 10px;            /* Space between buttons */
+    padding: 10px;        /* Add padding inside toolbar */
+}
+
+/* Style all buttons consistently */
+#tools button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;         /* Center the image (if any) */
+    align-items: center;
+    justify-content: center;
+}
+
+#tools button.clearCanvas {
+    background-color: white;
+}
+
+
+/* Remove individual button classes (optional) */
+.redB { background-color: red; }
+.blueB { background-color: blue; }
+.blackB { background-color: black; }
+.yellowB { background-color: yellow; }
+.greenB { background-color: green; }
+
+/* Ensure the clear button image fits properly */
+.clearCanvas img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#myRange{
+    -webkit-appearance: none;
+    border-radius: 10px;  
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    width: 200px;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+#myRange::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+    #tools {
+        width: 100%; /* Full width on mobile */
+        padding: 8px;
+        gap: 5px;
+        overflow-x: auto; /* Allow horizontal scrolling if too many buttons */
+    }
+
+    .canvas {
+        width: 100%; /* Full width on mobile */
+        height: 70vh; /* Adjust height relative to screen */
+        max-height: 400px; /* Prevent it from being too tall */
+    }
+
+    /* Make buttons slightly smaller on mobile */
+    #tools button {
+        width: 40px;
+        height: 40px;
+        min-width: 40px; /* Prevent shrinking */
+    }
+
+    /* Adjust SVG size inside clear button */
+    .clearCanvas img {
+        width: 30px;
+        height: 30px;
+    }
+}
