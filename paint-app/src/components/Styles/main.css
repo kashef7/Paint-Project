@@ -23,6 +23,7 @@
     border-color: black;
     background-color: rgb(107, 105, 105);
     width: 900px;
+    height: 67px;
     box-sizing: border-box;
     display: flex;        /* Make buttons flex items */
     align-items: center;  /* Vertically center buttons */
@@ -40,6 +41,12 @@
     display: flex;         /* Center the image (if any) */
     align-items: center;
     justify-content: center;
+    transition-duration: 0.2s;
+}
+
+#tools button:hover {
+    width: 52px;
+    height: 52px;
 }
 
 #tools button.clearCanvas {
