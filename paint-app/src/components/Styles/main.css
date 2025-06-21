@@ -60,7 +60,6 @@
 .blackB { background-color: black; }
 .yellowB { background-color: yellow; }
 .greenB { background-color: green; }
-
 /* Ensure the clear button image fits properly */
 .clearCanvas img {
     max-width: 100%;

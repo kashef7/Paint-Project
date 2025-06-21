@@ -7,8 +7,10 @@ export default function Main() {
     const prevPos = useRef({ x: 0, y: 0 });
     const ctx = useRef(null);
     const color = useRef('black');
+    const index = useRef(0);
     const [isMobile, setIsMobile] = useState(false);
     const [rangeVal, setRangeVal] = useState(3);
+    const [canvasHistory,setCanvasHistory] = useState([]); 
 
     useEffect(() => {
         const currentCanvas = canvas.current;
@@ -49,12 +51,16 @@ export default function Main() {
     const startDrawing = (e) => {
         isDraw.current = true;
         prevPos.current = getMousePos(canvas.current, e);
+        const currentPos = getMousePos(canvas.current, e);
+        ctx.current.beginPath();
+        ctx.current.fillStyle = color.current;
+        ctx.current.arc(currentPos.x, currentPos.y, rangeVal / 2, 0, Math.PI * 2);
+        ctx.current.fill();
     };
 
     const draw = (e) => {
         if (!isDraw.current) return;
         const currentPos = getMousePos(canvas.current, e);
-
         ctx.current.beginPath();
         ctx.current.moveTo(prevPos.current.x, prevPos.current.y);
         ctx.current.lineTo(currentPos.x, currentPos.y);
@@ -67,7 +73,25 @@ export default function Main() {
 
     const stopDrawing = () => {
         isDraw.current = false;
+        setCanvasHistory(prevHistory => {
+            const newHistory = prevHistory.slice(0, index.current + 1); // Keep only history up to current index
+            const newImageData = ctx.current.getImageData(0, 0, canvas.current.width, canvas.current.height);
+            return [...newHistory, newImageData];
+        });
+        index.current++;
     };
+
+    const undo = () => {
+        if (index.current > 0) {
+            index.current--;
+            ctx.current.putImageData(canvasHistory[index.current], 0, 0);
+        }
+    };
+
+    const selectColor = () =>{
+        color.current = document.getElementById("ColorInput").value;
+        document.querySelector(".multiColor").style.backgroundColor = color.current;
+    }
 
     const getMousePos = (ctx, evt) => {
         const rect = ctx.getBoundingClientRect();
@@ -88,6 +112,8 @@ export default function Main() {
                 <button className="yellowB" onClick={() => (color.current = "yellow")}></button>
                 <button className="greenB" onClick={() => (color.current = "green")}></button>
                 <button className="erase" onClick={() => (color.current = "white")}></button>
+                <input id="ColorInput" type="color"></input>
+                <button className="multiColor" onClick={selectColor}></button>
                 <button className="clearCanvas" onClick={() => {
                     ctx.current.fillStyle = "white";
                     ctx.current.fillRect(0, 0, canvas.current.width, canvas.current.height);
@@ -95,6 +121,7 @@ export default function Main() {
                     <img src="rubbish-bin-svgrepo-com.svg" width="40" height="40" alt="Clear" />
                 </button>
                 <input type="range" min="1" max="100" value={rangeVal} className="slider" id="myRange" onChange={newVal} />
+                <button className="Undo" onClick={undo} ></button>
             </div>
             <canvas className="canvas" ref={canvas}
                 onMouseDown={startDrawing}
